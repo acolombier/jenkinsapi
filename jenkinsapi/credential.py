@@ -308,7 +308,8 @@ class AmazonWebServicesCredentials(Credential):
             'accessKey': str,
             'secretKey': str,
             'iamRoleArn': str,
-            'iamMfaSerialNumber': str
+            'iamMfaSerialNumber': str,
+            'stsTokenDuration': int
         }
 
     When creating credential via jenkinsapi automatic fields not need to be in
@@ -323,6 +324,7 @@ class AmazonWebServicesCredentials(Credential):
         self.secret_key = cred_dict['secretKey']
         self.iam_role_arn = cred_dict.get('iamRoleArn', '')
         self.iam_mfa_serial_number = cred_dict.get('iamMfaSerialNumber', '')
+        self.sts_token_duration = int(cred_dict.get('stsTokenDuration', '3600'))
 
     def get_attributes(self):
         """
@@ -342,6 +344,7 @@ class AmazonWebServicesCredentials(Credential):
                     'secretKey': self.secret_key,
                     'iamRoleArn': self.iam_role_arn,
                     'iamMfaSerialNumber': self.iam_mfa_serial_number,
+                    'stsTokenDuration': str(self.sts_token_duration),
                     'description': self.description
                 }
             }
@@ -358,6 +361,7 @@ class AmazonWebServicesCredentials(Credential):
             'secretKey': self.secret_key,
             'iamRoleArn': self.iam_role_arn,
             'iamMfaSerialNumber': self.iam_mfa_serial_number,
+            'stsTokenDuration': str(self.sts_token_duration),
             'description': self.description
         }
         return super(AmazonWebServicesCredentials, self)._get_attributes_xml(data)
